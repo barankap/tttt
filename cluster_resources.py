@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect OpenShift master/infra capacity. Requires oc and Python 3."""
+"""Collect OpenShift master/infra capacity. Requires oc and Python 3.6+."""
 import argparse
 import csv
 import getpass
@@ -81,13 +81,13 @@ def main():
                     login.append('--certificate-authority=' + os.path.abspath(args.ca))
                 try:
                     # Do not print login output or exception command: they can contain credentials.
-                    result = subprocess.run(login, env=env, capture_output=True, timeout=90)
+                    result = subprocess.run(login, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=90)
                     if result.returncode:
                         print('ERROR: %s: login failed (credentials/TLS/connectivity).' % cluster, file=sys.stderr)
                         failures += 1
                         continue
                     result = subprocess.run(['oc', 'get', 'nodes', '-o', 'json', '--request-timeout=30s'],
-                                            env=env, capture_output=True, timeout=60)
+                                            env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=60)
                     if result.returncode:
                         print('ERROR: %s: node query failed (RBAC/connectivity).' % cluster, file=sys.stderr)
                         failures += 1
