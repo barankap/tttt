@@ -123,8 +123,8 @@ def main():
     parser.add_argument('-o', '--output', default='thanos_access.xlsx')
     parser.add_argument('--namespace', default='openshift-monitoring')
     parser.add_argument('--sa', default='thanos-exporter')
-    parser.add_argument('--duration-hours', type=int, default=24,
-                        help='Requested token lifetime in hours (default: 24); server decides actual expiry')
+    parser.add_argument('--duration-hours', type=int, default=87600,
+                        help='Requested token lifetime in hours (default: 87600 = 10 x 365 days); server decides actual expiry')
     tls = parser.add_mutually_exclusive_group()
     tls.add_argument('--insecure', action='store_true')
     tls.add_argument('--ca', help='PEM CA bundle for oc connections')
